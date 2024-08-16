@@ -1,0 +1,22 @@
+"""Criando o Arquivo requirements.txt
+Identifique as dependências: 
+Se o seu projeto já está em desenvolvimento, 
+você pode listar as dependências que estão 
+nstaladas no ambiente atual com o seguinte comando:
+
+pip freeze > requirements.txt
+Isso cria um arquivo requirements.txt contendo todas
+as bibliotecas instaladas, incluindo suas versões exatas.
+
+Instalando Dependências
+Depois de criar o arquivo requirements.txt,
+você pode instalar as dependências em qualquer 
+ambiente com o seguinte comando:
+
+pip install -r requirements.txt
+Isso garante que todas as bibliotecas listadas sejam 
+instaladas com as versões especificadas, facilitando 
+a replicação do ambiente do projeto em outras máquinas 
+ou servidores.
+
+"""
