@@ -3,6 +3,7 @@ from sqlite3 import Error
 
 class BancoDeDados:
     def __init__(self, nome_banco):
+        self.nome_banco = nome_banco
         """Inicializa a conexão com o banco de dados"""
         try:
             self.conexao = sqlite3.connect(nome_banco)
@@ -88,12 +89,17 @@ class BancoDeDados:
                 comando = ''
         t.close()
     
-    def executar_comando(self, sql, parametros=None):
-        if parametros:
+    def executar_comando(self, sql, parametros=(), retorna_resultado=False):
+        try:
             self.cursor.execute(sql, parametros)
-        else:
-            self.cursor.execute(sql)
-        self.conexao.commit()
+            if retorna_resultado:
+                return self.cursor.fetchall()
+            self.conexao.commit()
+        except sqlite3.Error as e:
+            print(f"Erro ao executar comando: {e}")
+        finally:
+            self.cursor.close()
+            self.conexao.close()
     
     def consultar(self, sql, parametros=None):
         if parametros:
@@ -110,9 +116,15 @@ class BancoDeDados:
         parametros = (nome, data_nascimento, cpf, genero, email)
         self.executar_comando(sql, parametros)
 
-    def ler_pessoa(self, id_pessoa):
-        sql = "SELECT * FROM Pessoa WHERE id_pessoa = ?"
-        return self.consultar(sql, (id_pessoa,))
+    def ler_pessoa(self, sql, parametros=()):
+        try:
+            self.cursor.execute(sql, parametros)
+            return self.cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"Erro ao ler dados: {e}")
+        finally:
+            self.cursor.close()
+            self.conexao.close()
 
     def atualizar_pessoa(self, id_pessoa, nome=None, data_nascimento=None, cpf=None, genero=None, email=None):
         campos = []

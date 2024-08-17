@@ -7,7 +7,7 @@ class Pessoa(ABC):
         self.email = email
         self.telefone = telefone
         self.endereco = endereco
-
+        
     @abstractmethod
     def salvar(self):
         pass

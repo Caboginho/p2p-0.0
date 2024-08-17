@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS Documento (
 CREATE TABLE Saude (
     id_saude INTEGER PRIMARY KEY AUTOINCREMENT,
     id_pessoa INT,
-    --tipo_informacao ENUM('Historico Medico', 'Alergia', 'Plano de Saude', 'Medicamento', 'Outro'),
+    tipo_informacao VARCHAR(255),
     descricao TEXT,
     data_registro DATE,
     FOREIGN KEY (id_pessoa) REFERENCES Pessoa(id_pessoa)
@@ -59,7 +59,7 @@ CREATE TABLE Educacao (
     id_pessoa INT,
     instituicao VARCHAR(255),
     curso VARCHAR(255),
-    --nivel ENUM('Ensino Fundamental', 'Ensino Médio', 'Graduação', 'Pós-Graduação', 'Mestrado', 'Doutorado'),
+    nivel VARCHAR(255),
     data_inicio DATE,
     data_conclusao DATE,
     FOREIGN KEY (id_pessoa) REFERENCES Pessoa(id_pessoa)
@@ -81,12 +81,12 @@ CREATE TABLE Trabalho (
 CREATE TABLE Justica (
     id_justica INTEGER PRIMARY KEY AUTOINCREMENT,
     id_pessoa INT,
-    --tipo_processo ENUM('Cível', 'Criminal', 'Trabalhista', 'Administrativo'),
+    tipo_processo VARCHAR(255),
     numero_processo VARCHAR(50),
     descricao TEXT,
     data_inicio DATE,
     data_fim DATE,
-    --resultado ENUM('Em Andamento', 'Condenação', 'Absolvição', 'Acordo'),
+    resultado VARCHAR(255),
     FOREIGN KEY (id_pessoa) REFERENCES Pessoa(id_pessoa)
 );
 --Tabela Negocio
@@ -106,7 +106,7 @@ CREATE TABLE Negocio (
 CREATE TABLE SegurancaSocial (
     id_seg_social INTEGER PRIMARY KEY AUTOINCREMENT,
     id_pessoa INT,
-    -- tipo_beneficio ENUM('Aposentadoria', 'Auxílio-Doença', 'Pensão', 'Outro'),
+    tipo_beneficio VARCHAR(255),
     data_inicio DATE,
     data_fim DATE,
     valor_mensal DECIMAL(10, 2),
@@ -117,7 +117,7 @@ CREATE TABLE SegurancaSocial (
 CREATE TABLE TransacaoP2P (
     id_transacao INTEGER PRIMARY KEY AUTOINCREMENT,
     id_pessoa INT,
-    --tipo_transacao ENUM('Compra', 'Venda', 'Troca', 'Doação'),
+    tipo_transacao VARCHAR(255),
     descricao TEXT,
     valor DECIMAL(10, 2),
     data_transacao DATE,
@@ -181,11 +181,21 @@ CREATE TABLE IF NOT EXISTS StatusAgenda (
 );
 --Tabela da Pessoa Juridica 
 CREATE TABLE PessoaJuridica (
-    id_pessoa_juridica INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome_fantasia TEXT NOT NULL,
     razao_social TEXT NOT NULL,
     cnpj TEXT UNIQUE NOT NULL,
     email TEXT NOT NULL,
+    telefone TEXT,
+    endereco TEXT
+);
+--Tabela da Pessoa fisica 
+CREATE TABLE IF NOT EXISTS PessoaFisica (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    cpf TEXT NOT NULL,
+    data_nascimento TEXT NOT NULL,
+    email TEXT,
     telefone TEXT,
     endereco TEXT
 );

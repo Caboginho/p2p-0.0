@@ -7,27 +7,23 @@ class PessoaFisica(Pessoa):
         super().__init__(nome, email, telefone, endereco)
         self.cpf = cpf
         self.data_nascimento = data_nascimento
+        self.nome_banco = 'cadastro_unico.db'
 
     def salvar(self):
-        comando = """
-        INSERT INTO PessoaFisica (nome, cpf, data_nascimento, email, telefone, endereco) 
-        VALUES (?, ?, ?, ?, ?, ?);
-        """
-        BancoDeDados().executar_comando(comando, (self.nome, self.cpf, self.data_nascimento, self.email, self.telefone, self.endereco))
+        comando = """INSERT INTO PessoaFisica (nome, cpf, data_nascimento, email, telefone, endereco)
+                     VALUES (?, ?, ?, ?, ?, ?)"""
+        BancoDeDados(self.nome_banco).executar_comando(comando, (self.nome, self.cpf, self.data_nascimento, self.email, self.telefone, self.endereco))
 
-    def atualizar(self, id_pessoa_fisica):
-        comando = """
-        UPDATE PessoaFisica
-        SET nome = ?, cpf = ?, data_nascimento = ?, email = ?, telefone = ?, endereco = ?
-        WHERE id_pessoa_fisica = ?;
-        """
-        BancoDeDados().executar_comando(comando, (self.nome, self.cpf, self.data_nascimento, self.email, self.telefone, self.endereco, id_pessoa_fisica))
+    def buscar(self, id):
+        comando = "SELECT * FROM PessoaFisica WHERE id = ?"
+        return BancoDeDados(self.nome_banco).consultar(comando, (id,))
 
-    def deletar(self, id_pessoa_fisica):
-        comando = "DELETE FROM PessoaFisica WHERE id_pessoa_fisica = ?;"
-        BancoDeDados().executar_comando(comando, (id_pessoa_fisica,))
+    def atualizar(self, id):
+        comando = """UPDATE PessoaFisica SET nome = ?, cpf = ?, data_nascimento = ?, email = ?, telefone = ?, endereco = ?
+                     WHERE id = ?"""
+        BancoDeDados(self.nome_banco).executar_comando(comando, (self.nome, self.cpf, self.data_nascimento, self.email, self.telefone, self.endereco, id))
 
-    def buscar(self, id_pessoa_fisica):
-        comando = "SELECT * FROM PessoaFisica WHERE id_pessoa_fisica = ?;"
-        return BancoDeDados().consultar(comando, (id_pessoa_fisica,))
+    def deletar(self, id):
+        comando = "DELETE FROM PessoaFisica WHERE id = ?"
+        BancoDeDados(self.nome_banco).executar_comando(comando, (id,))
 
